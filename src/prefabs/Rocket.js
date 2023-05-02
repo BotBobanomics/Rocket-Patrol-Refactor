@@ -12,18 +12,29 @@ class Rocket extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // left/right movement
-        if(!this.isFiring) {
-            if(keyLEFT.isDown && this.x >= borderUISize + this.width) {
-                this.x -= this.moveSpeed;
-            } else if (keyRIGHT.isDown && this.x <= game.config.width - borderUISize - this.width) {
-                this.x += this.moveSpeed;
+        // left/right movement with both keys and mouse controls
+        if(keyLEFT.isDown && this.x >= borderUISize + this.width) {
+            this.x -= this.moveSpeed;
+        } 
+        else if (keyRIGHT.isDown && this.x <= game.config.width - borderUISize - this.width) {
+            this.x += this.moveSpeed;
+        } 
+        else if (this.x <= game.config.width - borderUISize - this.width && this.x >= borderUISize + this.width){
+            if (game.input.mousePointer.x <= game.config.width - borderUISize - this.width && game.input.mousePointer.x >=borderUISize + this.width){
+                this.x = game.input.mousePointer.x;
             }
-
         }
 
         // fire button
         if (Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring) {
+            this.scene.FIREtext.setVisible(false);
+            this.isFiring = true;
+            this.sfxRocket.play();
+        }
+
+        // mouse fire button
+        if (mouse.isDown && !this.isFiring){
+            this.scene.FIREtext.setVisible(false);
             this.isFiring = true;
             this.sfxRocket.play();
         }
@@ -35,6 +46,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
         // reset on miss
         if (this.y <= borderUISize * 3 + borderPadding) {
+            this.scene.FIREtext.setVisible(true);
             this.isFiring = false;
             this.y = game.config.height - borderUISize - borderPadding;
         }
@@ -42,6 +54,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     }
 
     reset(){
+        this.scene.FIREtext.setVisible(true);
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
     }
