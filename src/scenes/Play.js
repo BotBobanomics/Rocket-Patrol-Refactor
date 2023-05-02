@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
+        this.load.image('smallspaceship', './assets/KidMeal_Mcdonald_ship.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
@@ -28,7 +29,7 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
-        this.ship04 = new Spaceship(this, game.config.width, borderUISize*5 + borderPadding*2.5, 'spaceship', 0, 50).setOrigin(0,0);
+        this.ship04 = new Spaceship(this, game.config.width, borderUISize*4 + borderPadding*3, 'smallspaceship', 0, 50).setOrigin(0,0);
 
         // define keys
         mouse = this.input.mousePointer;
@@ -80,18 +81,18 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
-        this.scoreRight = this.add.text(borderUISize + borderPadding * 12, borderUISize + borderPadding * 2, 'HI:' + this.HiScore, scoreConfig);
+        this.HiScoreLeft = this.add.text(borderUISize + borderPadding * 12, borderUISize + borderPadding * 2, 'HI:' + this.HiScore, scoreConfig);
         this.FIREtext = this.add.text(270, borderUISize + borderPadding * 2, 'FIRE', FireConfig)
         // GAME OVER flag
         this.gameOver = false;
         
-        // 60-second play clock
+        // Play clock
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+        this.clock = this.time.addEvent({delay: game.settings.gameTimer, callback: () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or (M) for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
-        }, null, this);
+        }, scope: this, loop: true});
 
         // Display clock
         this.TimeTicking = game.settings.gameTimer;
@@ -119,7 +120,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
             this.scene.start("menuScene");
         }
-        
+        console.log(this.clock);
         this.starfield.tilePositionX -= 4;
         
         if (!this.gameOver) {
@@ -134,29 +135,29 @@ class Play extends Phaser.Scene {
         if (this.checkCollision(this.p1Rocket, this.ship04)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship04);
-            this.TimeTicking += 2000;
-            game.settings.gameTimer += 2000;
+            this.TimeTicking += 3000;
+            this.clock.delay += 3000;
         }
 
         if (this.checkCollision(this.p1Rocket, this.ship03)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
-            this.TimeTicking += 2000;
-            game.settings.gameTimer += 2000;
+            this.TimeTicking += 500;
+            this.clock.delay += 500;
         }
 
         if (this.checkCollision(this.p1Rocket, this.ship02)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
-            this.TimeTicking += 3000;
-            game.settings.gameTimer += 3000;
+            this.TimeTicking += 1000;
+            this.clock.delay += 1000;
         }
 
         if (this.checkCollision(this.p1Rocket, this.ship01)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
-            this.TimeTicking += 4000;
-            game.settings.gameTimer += 4000;
+            this.TimeTicking += 2000;
+            this.clock.delay += 2000;
         }
     }
 
@@ -187,7 +188,7 @@ class Play extends Phaser.Scene {
             this.HiScore = this.p1Score;
             localStorage.setItem("score", this.HiScore);
         }
-        this.scoreRight.text = "HI:" + this.HiScore;
+        this.HiScoreLeft.text = "HI:" + this.HiScore;
         this.sound.play('sfx_explosion');
     }
 
