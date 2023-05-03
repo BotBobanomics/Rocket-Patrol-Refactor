@@ -8,6 +8,7 @@
 // Implement the speed increase that happens after 30 seconds in the original game (5)
 // Allow the player to control the Rocket after it's fired (5)
 // Display the time remaining (in seconds) on the screen (10)
+// Create a new title screen (e.g., new artwork, typography, layout) (10)
 // Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (15)
 // Implement a new timing/scoring mechanism that adds time to the clock for successful hits (15)
 // Implement mouse control for player movement and mouse click to fire (15)
@@ -15,6 +16,7 @@
 // Sources:
 // https://michael-karen.medium.com/how-to-save-high-scores-in-local-storage-7860baca9d68 (Used as reference for high score)
 // https://phaser.discourse.group/t/countdown-timer/2471/4 (Used as reference for displaying Timer)
+// https://www.pixilart.com/art/mountain-sky-ba14228d6eefcf4?ft=tags&ft_id= (Menu background)
 
 let config = {
     type: Phaser.AUTO,
