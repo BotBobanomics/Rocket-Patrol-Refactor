@@ -41,7 +41,6 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        this.ssbackground = setScroll()
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             // easy mode
             game.settings = {
