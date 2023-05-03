@@ -1,6 +1,6 @@
 // Brennen Tsang
-// Rocket Patrol: Modded
-// 6 hours
+// Rocket Patrol: Revamped
+// 8 hours
 //--------------------------------------------------------------------------------
 // Mods added:
 // Track a high score that persists across scenes and display it in the UI (5)
